@@ -59,6 +59,8 @@ namespace API.Data
             {
                 context.People.Add(person);
             }
+
+            
             context.SaveChanges();
         }
     }

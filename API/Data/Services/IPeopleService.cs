@@ -12,5 +12,6 @@ namespace API.Data.Services
         Task<Response<PersonDto>> GetPerson(int id);
         Task<Response<PersonDto>> CreatePerson(CreatePersonDto person);
         Task<bool> DeletePerson(int id);
+        Task<Response<PersonDto>> UpdatePerson(UpdatePersonDto person, int id);
     }
 }

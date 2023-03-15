@@ -1,5 +1,7 @@
 using API.Data;
+using API.Data.Entities;
 using API.Data.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,12 +12,19 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IPeopleService,PeopleService>();
+builder.Services.AddScoped<IPeopleService, PeopleService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStarshipService, StarshipService>();
 
 builder.Services.AddDbContext<StoreContext>(opt =>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddIdentity<AppUser, AppRole>()
+    .AddEntityFrameworkStores<StoreContext>()
+    .AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 
@@ -29,7 +38,7 @@ try
 }
 catch (Exception ex)
 {
-    logger.LogError(ex,"Problem migrating data");
+    logger.LogError(ex, "Problem migrating data");
 }
 
 // Configure the HTTP request pipeline.

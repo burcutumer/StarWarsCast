@@ -10,11 +10,12 @@ namespace API.Data.Entities
     public class Person
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public int Height { get; set; }
         public int Mass { get; set; }
-        public string SkinColor { get; set; }
-        public string EyeColor { get; set; }
+        public string SkinColor { get; set; } = null!;
+        public string EyeColor { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
+        public List<Starship> Starships { get; set; } = new();
     }
 }
