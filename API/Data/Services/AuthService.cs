@@ -41,10 +41,19 @@ namespace API.Data.Services
                     Error = "User is not found"
                 };
             }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var claims = new List<Claim>{
+                new Claim(ClaimTypes.Name, requestDto.Email)
+            };
+            // foreach(var r in roles)
+            // {
+            //     claims.Add(new Claim(ClaimTypes.Role, r));
+            // }
+            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+
             // email ve sifre dogru artik token uretebilirim
-            var token = GenerateJwtToken(_secretKey, 10, new List<Claim>{
-                new Claim(ClaimTypes.Name, requestDto.Email)       //  name demek email
-            });
+            var token = GenerateJwtToken(_secretKey, 10, claims);
 
             return new Response<LoginResponseDto>
             {

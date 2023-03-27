@@ -3,14 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(StoreContext context)
+        public static async Task Initialize(StoreContext context, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
         {
             if (context.People.Any()) return;
+
+            await roleManager.CreateAsync(new AppRole
+            {
+                Name = "user"
+            });
+            await roleManager.CreateAsync(new AppRole
+            {
+                Name = "admin"
+            });
+            var adminUser = new AppUser
+            {
+                Email = "admin@mail.com",
+                NickName = "admin",
+                UserName = "admin@mail.com"
+            };
+            await userManager.CreateAsync(adminUser, "Pa$$w0rd!");
+            await userManager.AddToRoleAsync(adminUser, "admin");
 
             var people = new List<Person>
             {
@@ -57,11 +75,11 @@ namespace API.Data
             };
             foreach (var person in people)
             {
-                context.People.Add(person);
+                await context.People.AddAsync(person);
             }
 
-            
-            context.SaveChanges();
+
+            await context.SaveChangesAsync();
         }
     }
 }

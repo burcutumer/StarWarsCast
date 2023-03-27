@@ -46,17 +46,24 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(
+//     options => {
+//     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin"));
+//     options.AddPolicy("UserPolicy", policy => policy.RequireRole("user"));
+// }
+);
 
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 try
 {
-    context.Database.MigrateAsync();
-    DbInitializer.Initialize(context);
+    await context.Database.MigrateAsync();
+    await DbInitializer.Initialize(context, roleManager, userManager);
 }
 catch (Exception ex)
 {

@@ -12,6 +12,5 @@ namespace API.Data.Dtos
         public int Mass { get; set; }
         public string SkinColor { get; set; } = null!;
         public string EyeColor { get; set; } = null!;
-        public List<StarshipDto>? Starships { get; set; }
     }
 }

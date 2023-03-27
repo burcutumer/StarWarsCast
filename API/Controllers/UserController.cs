@@ -23,7 +23,7 @@ namespace API.Controllers
             {
                 return BadRequest(result);
             }
-            return Ok(result.Data);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -32,7 +32,7 @@ namespace API.Controllers
             var result = await _userInterface.GetUserByIdAsync(id);
             if (result.Data != null)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return BadRequest(result);
         }
@@ -45,7 +45,7 @@ namespace API.Controllers
 
             if (result.Data != null)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return BadRequest(result);
         }

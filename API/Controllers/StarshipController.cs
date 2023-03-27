@@ -20,9 +20,9 @@ namespace API.Controllers
 
             if (result.Data != null)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Error);
+            return BadRequest(result);
         }
 
         [HttpPost]
@@ -32,9 +32,9 @@ namespace API.Controllers
 
             if (result.Error != null)
             {
-                return BadRequest(result.Error);
+                return BadRequest(result);
             }
-            return Ok(result.Data);
+            return Ok(result);
         }
     }
 }

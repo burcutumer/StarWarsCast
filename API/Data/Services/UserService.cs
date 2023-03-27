@@ -17,12 +17,22 @@ namespace API.Data.Services
         {
             var appUser = new AppUser
             {
-                PasswordHash = user.Password,
                 Email = user.Email,
                 NickName = user.NickName,
                 UserName = user.Email
             };
             var result = await _userManager.CreateAsync(appUser, user.Password);
+
+            if (!result.Succeeded)
+            {
+                return new Response<UserDto>
+                {
+                    Error = result.Errors.Select(e => e.Description).ToList()
+                };
+            }
+
+            await _userManager.AddToRoleAsync(appUser, "user");
+
             return new Response<UserDto>
             {
                 Data = MapUserDto(appUser)

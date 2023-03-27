@@ -19,10 +19,10 @@ namespace API.Controllers
 
             if (result.Data == null)
             {
-                return BadRequest(result.Error);
+                return BadRequest(result);
             }
 
-            return Ok(result.Data);
+            return Ok(result);
         }
     }
 }
